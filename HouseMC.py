@@ -7,7 +7,17 @@ import os       # to help save the files of text
 import re       # for replacement via regular expressions
 import nltk     # for splitting text into words
 import random   # for picking random words
+import sys
 
+# If an argument is given, use it for the minimum text length:
+try:
+    minwords = int(sys.argv[1])
+except ValueError:
+    print("I don't know what " + sys.argv[1] + " means, so I'll ignore it.")
+    minwords = 10
+except IndexError:
+    minwords = 10
+    
 # Create a directory to store episode transcripts (if it doesn't already exist):
 try:
     os.mkdir('texts')
@@ -99,7 +109,7 @@ def postprocess(text):
 # Generate text using 2-grams:
 pair = random.choice([pair for pair in stream2 if pair[0][0].isupper()])
 words = [pair[0], pair[1]]
-while (words[-1] != '.') & (words[-1] != '!') & (words[-1] != '?') | (len(words) < 20):
+while (words[-1] != '.') & (words[-1] != '!') & (words[-1] != '?') | (len(words) < minwords):
     pair = nextpair(pair)
     words.append(pair[-1])
 
