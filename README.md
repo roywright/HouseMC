@@ -6,6 +6,7 @@ Samples:
 * "I need to look there, cut it off."
 * "It's a parasite. Because if we can confirm an infection from the bus."
 * "Hi. Guess I should have told her that every day should be naked pictures."
+* "What did I fire you. BOO! Just tell them how appalling the doctor. Thank you Dr Cuddy."
 
 
 Files:
