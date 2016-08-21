@@ -11,5 +11,5 @@ Samples:
 
 Files:
 * `HouseMD.ipynb` is a Jupyter/IPython notebook with the code and some sample results.
-* `HouseMD.py` is essentially the same code, but meant to be run at the command line.
+* `HouseMD.py` is essentially the same code, but meant to be run at the command line, with an optional argument for text length.
 * `filenames.txt` contains a list that is needed to run each of the other files.
