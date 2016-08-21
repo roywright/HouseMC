@@ -2,8 +2,6 @@
 Markov chain text generator based on [everything Dr. Gregory House ever said](http://clinic-duty.livejournal.com/12225.html). (I've never done this before, so it's a work in progress.)
 
 Samples:
-* "The envious, jealous, I just realized I'm fine. Methemoglobinemia. The ball and
-chain smacked you down."
 * "Listen, Vogler's suggestion was idiotic — we're amazing."
 * "I need to look there, cut it off."
 * "It's a parasite. Because if we can confirm an infection from the bus."
