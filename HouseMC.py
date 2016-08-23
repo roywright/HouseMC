@@ -99,6 +99,7 @@ replacements = {
     " ‘ " : " ‘",
     "$ " : "$",
     " …" : "...",
+    " — " : " -- ",
     " - " : "-"
 }
 def postprocess(text):
