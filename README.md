@@ -10,7 +10,7 @@ Markov chain text generator based on [everything Dr. Gregory House ever said](ht
 
 **Files:**
 * `HouseMD.ipynb` is a Jupyter/IPython notebook with the code and some sample results.
-* `HouseMD.py` is essentially the same code, but meant to be run at the command line, with an optional argument for text length.
+* `HouseMD.py` is essentially the same code, but meant to be run at the command line, with an optional argument for text length. For example, type "`python HouseMD.py 30`" for a quote that's about 3 times as long as the default.
 * `filenames.txt` contains a list that is needed to run either version of the script.
 
 **Note**: Running this script will use about 36 MB of disk space.
