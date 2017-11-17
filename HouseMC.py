@@ -70,11 +70,11 @@ for name in filenames:
             re.sub( # eliminate any [text in brackets]
                     r'\[(.*?)\]|\<(.*?)\>|\((.*?)\)', '', line
                 ).replace(  # The transcripts are very nonstandardized
-                    'House: ', ''
-                ).replace(  # in the sense that there are four different
-                    'HOUSE: ', ''
-                ).replace(  # ways that House's lines may be marked
                     'GREG HOUSE: ', ''
+                ).replace(  # in the sense that there are four different
+                    'House: ', ''
+                ).replace(  # ways that House's lines may be marked
+                    'HOUSE: ', ''
                 ).replace(  # so we have to deal with each one :(
                     'House : ', ''
                 )  
