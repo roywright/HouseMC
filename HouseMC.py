@@ -1,7 +1,7 @@
 # House, M.C.
 # (Generation of random text that sounds like Dr. House)
 
-# Packages:
+# Packages
 import urllib.request  # for grabbing the text off the internet
 import os       # to help save the files of text
 import re       # for replacement via regular expressions
@@ -9,7 +9,7 @@ import nltk     # for splitting text into words
 import random   # for picking random words
 import sys
 
-# If an argument is given, use it for the minimum text length:
+# If an argument is given, use it for the minimum text length
 try:
     minwords = int(sys.argv[1])
 except ValueError:
@@ -18,21 +18,20 @@ except ValueError:
 except IndexError:
     minwords = 10
     
-# Create a directory to store episode transcripts (if it doesn't already exist):
+# Create a directory to store episode transcripts (if it doesn't already exist)
 try:
     os.mkdir('texts')
 except FileExistsError:
     pass
 
-# Get a list of transcript filenames:
+# Get a list of transcript filenames
 with open("filenames.txt", "r") as namesfile:
     filenames = namesfile.readlines()
 filenames = [name.strip('\n') for name in filenames]
 
- 
 
-# Store the episode transcripts locally (if they don't already exist):
-# WARNING -- There are 177 files, totaling 36.2 MB.
+# Store the episode transcripts locally (if they don't already exist)
+# WARNING -- There are 177 files, totaling 36.2 MB
 warned = False
 for name in filenames:
     if not (os.path.isfile('texts/' + name)):
@@ -40,11 +39,14 @@ for name in filenames:
             print('Retrieving transcripts from every House episode ever...')
             print('(This could take several minutes!)')
             warned = True
-        urllib.request.urlretrieve('http://community.livejournal.com/clinic_duty/' + name, 'texts/' + name)
+        urllib.request.urlretrieve(
+            'http://community.livejournal.com/clinic_duty/' + name, 
+            'texts/' + name
+        )
 
 print('Here comes your text...')
 
-# Characters that will need to be removed or altered:
+# Characters that will need to be removed or altered
 replacements = {
     "&rsquo;" : "'",
     "&#39;" : "",
@@ -59,35 +61,53 @@ replacements = {
     " - " : " — "
 }
 
-# Extract a list of the complete text spoken by Dr. House in every episode:
+# Extract a list of the complete text spoken by Dr. House in every episode
 episodes = []
 for name in filenames:
     with open('texts/' + name, 'r', encoding="utf8") as myfile:
         data = myfile.read().replace('\n', '').split('<br />')
         data = ' '.join([
-            re.sub(r'\[(.*?)\]|\<(.*?)\>|\((.*?)\)', '', line).replace('House: ', '')  # (eliminate any [text in brackets])
+            re.sub( # eliminate any [text in brackets]
+                    r'\[(.*?)\]|\<(.*?)\>|\((.*?)\)', '', line
+                ).replace(  # The transcripts are very nonstandardized
+                    'House: ', ''
+                ).replace(  # in the sense that there are four different
+                    'HOUSE: ', ''
+                ).replace(  # ways that House's lines may be marked
+                    'GREG HOUSE: ', ''
+                ).replace(  # so we have to deal with each one :(
+                    'House : ', ''
+                )  
             for line in data 
-            if line.startswith('House:')
+            if line.lower().startswith('house:') 
+                or line.lower().startswith('greg house:')
+                or line.lower().startswith('house :')
         ])
         for key in replacements:
             data = data.replace(key, replacements[key])
         episodes.append(data)
 
-# Join all episodes into one large text string:
+# Join all episodes into one large text string
 alltext = ' '.join(ep for ep in episodes)
 
 # Build the list of words used:
 tokenizer = nltk.tokenize.RegexpTokenizer(r"\w+|[^\w\s]+")
 stream = tokenizer.tokenize(alltext)
 
-# Build a list of word pairs used (AKA 2-grams):
+# Build a list of word pairs used (AKA 2-grams)
 stream2 = [(stream[i], stream[i+1]) for i in range(len(stream)-1)]
 
-# A function that takes a pair of words and randomly chooses a word to follow them:
+# A function that takes a pair of words and 
+# randomly chooses a word to follow them
 def nextpair(pair):
-    return stream2[random.choice([i for i, j in enumerate(stream2) if (j == pair) & (i < len(stream2)-2)]) + 1]
+    return stream2[
+        random.choice([
+                i for i, j in enumerate(stream2) 
+                if (j == pair) & (i < len(stream2)-2)
+            ]) + 1
+    ]
 
-# To clean up the generated text:
+# To clean up the generated text
 replacements = {
     ' .' : '.',
     ' ,' : ',',
@@ -107,13 +127,15 @@ def postprocess(text):
         text = text.replace(key, replacements[key])
     return text
 
-# Generate text using 2-grams:
+# Generate text using 2-grams
 pair = random.choice([pair for pair in stream2 if pair[0][0].isupper()])
 words = [pair[0], pair[1]]
-while (words[-1] != '.') & (words[-1] != '!') & (words[-1] != '?') | (len(words) < minwords):
+while (
+    (words[-1] != '.') & (words[-1] != '!') & (words[-1] != '?')
+) | (len(words) < minwords):
     pair = nextpair(pair)
     words.append(pair[-1])
 
-# Show the result:
+# Show the result
 print('\nHouse M.C. says:\n"' + postprocess(' '.join(words)) + '"')
 
